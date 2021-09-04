@@ -13,6 +13,7 @@ fun main() {
         // remember that the pin parameter of the output() function refers
         // to the GPIO number. E.g. passing in 17 will target GPIO17 which is
         // pin number 11 (at least on on Raspberry PI 3B).
+        // See https://www.raspberrypi.org/documentation/computers/os.html#gpio-pinout for more details.
         gpio.output(17).use { output ->
             // it's probably a good idea to hook the LED to the pin first,
             // before setting it to HIGH...?
