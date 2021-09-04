@@ -46,7 +46,7 @@ Simply run `./gradlew`. The project should build fine and the binary .kexe shoul
 in the `build/bin/native/releaseExecutable/` folder.
 
 As stated above, I'm building this project on my Ubuntu 21.04 x86-64 machine and it works properly,
-however the build should create an arm64 binary even when running on MacOsX or Windows.
+however the build should work properly even when running on MacOsX or Windows.
 
 ## Running
 
