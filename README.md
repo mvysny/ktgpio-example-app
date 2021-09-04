@@ -48,17 +48,18 @@ however the build should create an arm64 binary even when running on MacOsX or W
 ## Running
 
 The binary will obviously only run on an arm64 Linux. It needs to have the `libi2c0` and `libgpiod` libraries
-installed (those are needed by the ktgpio library). Simply copy the binary from your desktop machine to your
+installed (those are needed by the ktgpio library) - make sure to install them first as stated above.
+Now, simply copy the binary from your desktop machine to your
 Raspberry PI, for example via ssh by using the scp program.
 
 You'll probably need to run this app with sudo, in order to be able to access
 `/dev/mem` and `/dev/gpiomem`. See
 https://raspberrypi.stackexchange.com/questions/40105/access-gpio-pins-without-root-no-access-to-dev-mem-try-running-as-root
-for more details. Simply run the binary with `sudo` and you should be fine.
+for more details. Simply run the binary with `sudo ./ktgpio-example-app.kexe` and you should be fine.
 
 ## Development
 
-Simply download Intellij IDEA (Community Edition is enough) in order to develop this example app further.
+Simply download Intellij IDEA (Community Edition is enough) and open this project in order to develop this example app further.
 Intellij offers amazing autocomplete capabilities, it's definitely worth a try.
 
 The development cycle is as follows:
