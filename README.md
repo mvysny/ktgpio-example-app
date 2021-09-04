@@ -20,15 +20,16 @@ Therefore, you can not build this project on the Raspberry PI itself - you'll ne
 on an x86-64 machine (Intel/AMD) via a process called cross-compiling (that is, compiling a binary which runs on a CPU with different architecture).
 
 According to [Kotlin/Multiplatform Supported Platforms](https://kotlinlang.org/docs/mpp-supported-platforms.html)
-building for linuxArm64 may not necessarily require running the build on a Linux machine, therefore you
+building for linuxArm64 may not necessarily require running the build on a Linux host. Therefore, you
 may have luck building this project on Windows and Mac as well. However, if there are any issues,
-make sure to build this project on a Linux machine (I'm using Ubuntu 21.04 x86-64 and the project builds just fine).
+make sure to build this project on a Linux host machine (I'm using Ubuntu 21.04 x86-64 and the project builds just fine).
 
 You need to install Java SDK on the build machine, in order to be able to run the Gradle build script. You
 don't need to install Gradle itself - the `gradlew` script will download Gradle and all
 necessary files automatically, you only need to have an internet access.
 
-Obviously you'll need a Raspberry PI. By default this project builds an arm64 binary which only works
+Obviously you'll need a Raspberry PI, in order to run the binary produced by the build.
+By default this project builds an arm64 binary which only works
 on 64-bit Linux (I'm running Ubuntu 21.04 arm64 on my RPI 3B with 1G of RAM but the binary should work on any arm64 Linux, say on
 RPI 4). If you'd like to build this project for an arm32 Linux, see below for a list of tips.
 
