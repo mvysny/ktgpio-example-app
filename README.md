@@ -21,9 +21,9 @@ on an x86-64 machine (Intel/AMD) via a process called "cross-compiling" (that is
 The cross-compiling itself is handled automatically by the Kotlin plugin behind the scenes, there's nothing you need to do.
 You only need to remember to build the project on a x86 machine.
 
-You should build this project on a Linux x86-64 machine. However,
-according to [Kotlin/Multiplatform Supported Platforms](https://kotlinlang.org/docs/mpp-supported-platforms.html)
-building for linuxArm64 may not necessarily require running the build on a Linux host. Therefore, you
+You should build this project on a Linux x86-64 OS. However,
+according to [Kotlin/Multiplatform Supported Platforms](https://kotlinlang.org/docs/mpp-supported-platforms.html),
+building for linuxArm64 may work also on OS other than Linux. Therefore, you
 may have luck building this project on Windows and/or MacOS operating systems. However, if there are any issues,
 make sure to build this project on a Linux host machine (I'm using Ubuntu 21.04 x86-64 and the project builds just fine).
 
@@ -31,13 +31,13 @@ You need to install Java SDK on the build machine, in order to be able to run th
 don't need to install Gradle itself - the `gradlew` script will download Gradle and all
 necessary files automatically, you only need to have an internet access.
 
-Obviously you'll need a Raspberry PI, in order to run the binary produced by the build.
+Obviously you'll need a Raspberry PI in order to run the binary produced by the build.
 By default this project builds an arm64 binary which only works
 on 64-bit Linux (I'm running Ubuntu 21.04 arm64 on my RPI 3B with 1G of RAM but the binary should work on any arm64 Linux, say on
 RPI 4). If you'd like to build this project for an arm32 Linux, see below on how to do this.
 
-Make sure to install the gpio and i2c packages on your Raspberry PI before you try to run the binary,
-for example by running
+Make sure to have the `libgpio` and `libi2c` libraries installed on your Raspberry PI before you try to run the binary. You
+can install those by running
 `sudo apt install libi2c0 libgpiod gpiod`.
 
 ## Building
