@@ -4,9 +4,6 @@ plugins {
 
 defaultTasks("clean", "build")
 
-group = "me.mavi"
-version = "1.0-SNAPSHOT"
-
 repositories {
     mavenCentral()
 }
