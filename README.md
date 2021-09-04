@@ -17,7 +17,7 @@ Kotlin/Native at the moment doesn't support building on arm64: you'll get
 forum and also [KT-42445](https://youtrack.jetbrains.com/issue/KT-42445) for more details.
 
 Therefore, you can not build this project on the Raspberry PI itself - you'll need to build this project
-on an x86-64 machine (Intel/AMD) via a process called "cross-compiling" (that is, compiling a binary which runs on a CPU with different architecture).
+on an x86-64 machine (Intel/AMD) via a process called "cross-compiling" (that is, compiling a binary which runs on a CPU with an architecture different to the one performing the build).
 The cross-compiling itself is handled automatically by the Kotlin plugin behind the scenes, there's nothing you need to do.
 You only need to remember to build the project on a x86 machine.
 
