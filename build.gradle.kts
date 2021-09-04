@@ -9,24 +9,27 @@ repositories {
 }
 
 kotlin {
-    val hostOs = System.getProperty("os.name")
-    val isMingwX64 = hostOs.startsWith("Windows")
-    val nativeTarget = when {
-        hostOs == "Mac OS X" -> macosX64("native")
-        hostOs == "Linux" -> linuxX64("native")
-        isMingwX64 -> mingwX64("native")
-        else -> throw GradleException("Host OS is not supported in Kotlin/Native.")
-    }
+    // the ktgpio library only supports ARM targets; we're cross-compiling to ARM
+    val nativeTarget = linuxArm64("native")
 
     nativeTarget.apply {
         binaries {
             executable {
                 entryPoint = "main"
             }
+            // ktgpio needs linker to have access to the gpiod and i2c .so libraries
+            // which are located in this folder.
+            all { linkerOpts.add("-Llibs/") }
         }
     }
     sourceSets {
-        val nativeMain by getting
+        val nativeMain by getting {
+            dependencies {
+                // include the ktgpio library: https://github.com/ktgpio/ktgpio
+                implementation("io.ktgp:core:0.0.8")
+                implementation(kotlin("stdlib"))
+            }
+        }
         val nativeTest by getting
     }
 }
