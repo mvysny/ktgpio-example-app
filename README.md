@@ -49,7 +49,7 @@ however the build should create an arm64 binary even when running on MacOsX or W
 
 The binary will obviously only run on an arm64 Linux. It needs to have the `libi2c0` and `libgpiod` libraries
 installed (those are needed by the ktgpio library) - make sure to install them first as stated above.
-Now, simply copy the binary from your desktop machine to your
+Now, simply copy the `ktgpio-example-app.kexe` binary from your desktop machine to your
 Raspberry PI, for example via ssh by using the scp program.
 
 You'll probably need to run this app with sudo, in order to be able to access
