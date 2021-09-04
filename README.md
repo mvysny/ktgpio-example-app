@@ -6,7 +6,7 @@ A Kotlin/Native example app which uses the [ktgpio](https://github.com/ktgpio/kt
 This example app only activates the GPIO17 (pin #11) for a second, then turns it off.
 See the [Main.kt](src/nativeMain/kotlin/Main.kt) script for more details.
 
-For a more complex example please take look at the sources of the [ktgpio-samples](https://github.com/ktgpio/ktgpio-samples/)
+For a more complex example please take a look at the sources of the [ktgpio-samples](https://github.com/ktgpio/ktgpio-samples/)
 example app.
 
 ## Prerequisites
