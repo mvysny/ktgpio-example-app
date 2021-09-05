@@ -21,11 +21,11 @@ on an x86-64 machine (Intel/AMD) via a process called "cross-compiling" (that is
 The cross-compiling itself is handled automatically by the Kotlin plugin behind the scenes, there's nothing you need to do.
 You only need to remember to build the project on a x86 machine.
 
-You should build this project on a Linux x86-64 OS. However,
-according to [Kotlin/Multiplatform Supported Platforms](https://kotlinlang.org/docs/mpp-supported-platforms.html),
-building for linuxArm64 may work also on OS other than Linux. Therefore, you
-may have luck building this project on Windows and/or MacOS operating systems. However, if there are any issues,
-make sure to build this project on a Linux host machine (I'm using Ubuntu 21.04 x86-64 and the project builds just fine).
+You can use any major operating system to build this project. I'm using Ubuntu Linux x86-64 OS, however this
+project builds on Windows and MacOS as well.
+
+> See [Kotlin/Multiplatform Supported Platforms](https://kotlinlang.org/docs/mpp-supported-platforms.html) for
+> a list of supported build combinations of host and target architectures. Note you're building for the `linuxArm64` target architecture.
 
 You need to install Java SDK on the build machine, in order to be able to run the Gradle build script. You
 don't need to install Gradle itself - the `gradlew` script will download Gradle and all
