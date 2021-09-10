@@ -22,6 +22,7 @@ class LEDBoard(gpio: Gpio, pins: List<GpioPin>) : Closeable {
 
     override fun close() {
         leds.forEach { it.closeQuietly() }
+        leds.clear()
     }
 
     /**
