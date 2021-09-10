@@ -60,7 +60,7 @@ class LEDBoard(gpio: Gpio, pins: List<Pin>) : Closeable {
         sleep(delayMillis)
     }
 
-    override fun toString(): String = "LEDBoard($leds)"
+    override fun toString(): String = "LEDBoard(${leds.joinToString(", ") { "${it.pin.gpio}=${if(it.on) "on" else "off"}" }})"
 
     val indices: IntRange get() = leds.indices
 }
@@ -97,7 +97,7 @@ class LED(gpio: Gpio, val pin: Pin) : Closeable {
         output.close()
     }
 
-    override fun toString() = "LED($pin, ${if(on) "on" else "off"})"
+    override fun toString() = "LED(${pin.gpio}=${if(on) "on" else "off"})"
 
     /**
      * Turns the LED on.
