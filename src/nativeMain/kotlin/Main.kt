@@ -22,7 +22,6 @@ fun main() {
             repeat(10) {
                 ledBoard.indices.forEach {
                     ledBoard.light(it)
-                    println(ledBoard)
                     sleep(200)
                 }
             }

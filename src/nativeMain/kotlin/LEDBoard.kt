@@ -46,6 +46,9 @@ class LEDBoard(gpio: Gpio, pins: List<Pin>) : Closeable {
         leds.forEach { it.off() }
     }
 
+    /**
+     * [LED.toggle]s all LEDs.
+     */
     fun toggle() {
         leds.forEach { it.toggle() }
     }
@@ -113,6 +116,9 @@ class LED(gpio: Gpio, val pin: Pin) : Closeable {
         on = false
     }
 
+    /**
+     * Toggles the LED: turns it off if it was on, and vice versa.
+     */
     fun toggle() {
         on = !on
     }
