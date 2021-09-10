@@ -33,3 +33,12 @@ kotlin {
         val nativeTest by getting
     }
 }
+
+val deploy by tasks.creating {
+    dependsOn("build")
+    doLast {
+        exec {
+            commandLine("scp", "build/bin/native/debugExecutable/ktgpio-example-app.kexe", "ubuntu@192.168.0.19:~/Downloads")
+        }
+    }
+}
