@@ -3,7 +3,7 @@ import io.ktgp.use
 import io.ktgp.util.sleep
 
 fun main() {
-    printErr("Hello, Kotlin/Native!")
+    println("Hello, Kotlin/Native!")
     // you'll probably need to run this app with sudo, in order to be able to access
     // /dev/mem and /dev/gpiomem. See
     // https://raspberrypi.stackexchange.com/questions/40105/access-gpio-pins-without-root-no-access-to-dev-mem-try-running-as-root
