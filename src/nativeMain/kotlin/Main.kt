@@ -15,7 +15,7 @@ fun main() {
         // See https://www.raspberrypi.org/documentation/computers/os.html#gpio-pinout for more details.
         //
         // we're going to control three LEDs on adjacent GPIO ports: 17, 27 and 22.
-        gpio.ledboard(17, 27, 22).use { ledBoard ->
+        gpio.ledboard(Pin(17), Pin(27), Pin(22)).use { ledBoard ->
             // it's probably a good idea to hook the LED to the pin first,
             // before setting it to HIGH...?
             println(ledBoard)

@@ -74,7 +74,7 @@ class LEDBoard(gpio: Gpio, pins: List<Pin>) : Closeable {
  * pin number 11 (at least on on Raspberry PI 3B).
  * See https://www.raspberrypi.org/documentation/computers/os.html#gpio-pinout for more details.
  */
-value class Pin(val gpio: Int) {
+data class Pin(val gpio: Int) {
     init {
         require(gpio in 0..27) { "Invalid gpio number $gpio: must be 0..27" }
     }
@@ -143,8 +143,6 @@ fun Gpio.led(pin: Pin) = LED(this, pin)
  */
 fun Gpio.ledboard(pins: List<Pin>) = LEDBoard(this, pins)
 /**
- * Controls multiple LEDs on given [gpioPins]. Don't forget to close the [LEDBoard] afterwards.
- * @param gpioPins the GPIO pin number. E.g. passing in 17 will target GPIO17 which is
- * pin number 11 (at least on on Raspberry PI 3B).
+ * Controls multiple LEDs on given [pins]. Don't forget to close the [LEDBoard] afterwards.
  */
-fun Gpio.ledboard(vararg gpioPins: Int) = LEDBoard(this, gpioPins.map { Pin(it) })
+fun Gpio.ledboard(vararg pins: Pin) = ledboard(pins.toList())
