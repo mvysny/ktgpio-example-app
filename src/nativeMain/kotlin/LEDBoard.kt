@@ -63,14 +63,14 @@ class LEDBoard(gpio: Gpio, pins: List<GpioPin>) : LEDCollection, Closeable {
 
     /**
      * Blinks all the LEDs: turns it on for [onTimeMillis] (default 1000), then off for [offTimeMillis] (default 1000).
-     * Repeats [repeatTimes] (defaults to 1).
+     * Repeats [times] (defaults to 1).
      */
     fun blink(
         onTimeMillis: Long = 1000,
         offTimeMillis: Long = 1000,
-        repeatTimes: Int = 1
+        times: Int = 1
     ) {
-        repeat(repeatTimes) {
+        repeat(times) {
             on()
             sleep(onTimeMillis)
             off()

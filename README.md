@@ -73,6 +73,14 @@ The development cycle is as follows:
 4. Run it in your RPI
 5. Goto 1
 
+You can simply run steps 2. and 3. by running `./gradlew deploy` - it will rebuild the binary and
+deploy to your RPI.
+
+## More documentation
+
+Please read the [Python GPIOZero excellent documentation](https://gpiozero.readthedocs.io/en/stable/recipes.html)
+for more fun. This project implements some of the classes present in the GPIOZero project.
+
 ## Compiling a 32bit binary
 
 This project by default builds a 64bit binary for arm64. If you are running a 32bit Linux
