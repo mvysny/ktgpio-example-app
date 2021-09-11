@@ -5,7 +5,7 @@ import io.ktgp.util.sleep
 /**
  * Represents multiple LEDs which can be controlled at the same time.
  * @param pins connect to LEDs on all of these pins.
- * @param activeHigh If `true` (the default), the [on] method will set all the associated pins to HIGH.
+ * @property activeHigh If `true` (the default), the [on] method will set all the associated pins to HIGH.
  * If `false`, the [on] method will set all pins to LOW (the [off] method always does the opposite).
  * @param initialValue If `false` (the default), all LEDs will be off initially.
  * If `true`, the device will be switched on initially.
@@ -93,15 +93,19 @@ class LEDBoard(
     }
 
     override fun toString(): String =
-        "LEDBoard(${leds.joinToString(", ") { "gpio${it.pin}=${if (it.isLit) "on" else "off"}" }})"
+        "LEDBoard(${if (activeHigh) "active_high" else "active_low"}; ${leds.joinToString(", ") { "gpio${it.pin}=${if (it.isLit) "on" else "off"}" }})"
 }
 
 /**
  * Controls multiple LEDs on given [pins]. Don't forget to close the [LEDBoard] afterwards.
+ * @param pins connect to LEDs on all of these pins.
+ * @property activeHigh If `true` (the default), the [LEDBoard.on] method will set all the associated pins to HIGH.
+ * If `false`, the [LEDBoard.on] method will set all pins to LOW (the [LEDBoard.off] method always does the opposite).
+ * @param initialValue If `false` (the default), all LEDs will be off initially.
+ * If `true`, the device will be switched on initially.
  */
-fun Gpio.ledboard(pins: List<GpioPin>) = LEDBoard(this, pins)
-
-/**
- * Controls multiple LEDs on given [pins]. Don't forget to close the [LEDBoard] afterwards.
- */
-fun Gpio.ledboard(vararg pins: GpioPin) = ledboard(pins.toList())
+fun Gpio.ledboard(
+    vararg pins: GpioPin,
+    activeHigh: Boolean = true,
+    initialValue: Boolean = false
+) = LEDBoard(this, pins.toList(), activeHigh, initialValue)

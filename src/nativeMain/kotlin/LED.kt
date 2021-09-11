@@ -43,7 +43,7 @@ class LED(
         output.close()
     }
 
-    override fun toString() = "LED(gpio${pin}=${if (isLit) "on" else "off"})"
+    override fun toString() = "LED(${if (activeHigh) "active_high" else "active_low"}; gpio${pin}=${if (isLit) "on" else "off"})"
 
     /**
      * Turns the LED on.

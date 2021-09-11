@@ -21,9 +21,14 @@ class LEDBarGraph(
     override var litCount: Int
         get() = ledboard.litCount
         set(value) {
-            require(value in (0..count)) { "The value must be in range ${ledboard.indices}" }
+            require(value in litCountRange) { "The value must be in range $litCountRange" }
             ledboard.setValue(0 until value)
         }
+
+    /**
+     * Allowed range of the [litCount] property.
+     */
+    val litCountRange: IntRange get() = 0..count
 
     /**
      * The value of the LED bar graph. When no LEDs are lit, the value is 0. When all LEDs are lit, the value is 1.
@@ -45,15 +50,17 @@ class LEDBarGraph(
     }
 
     override fun toString(): String =
-        "LEDBarGraph(${litCount} lit out of ${leds.map { it.pin }})"
+        "LEDBarGraph(${if (activeHigh) "active_high" else "active_low"}; $litCount lit out of ${leds.map { it.pin }})"
 }
 
 /**
  * Controls multiple LEDs on given [pins]. Don't forget to close the [LEDBarGraph] afterwards.
+ * @param pins connect to LEDs on all of these pins.
+ * @param activeHigh See [LED.activeHigh].
+ * @param initialValue the initial [LEDBarGraph.value] of the graph given as a float, in the range of 0..1.
  */
-fun Gpio.ledBarGraph(pins: List<GpioPin>) = LEDBarGraph(this, pins)
-
-/**
- * Controls multiple LEDs on given [pins]. Don't forget to close the [LEDBarGraph] afterwards.
- */
-fun Gpio.ledBarGraph(vararg pins: GpioPin) = ledBarGraph(pins.toList())
+fun Gpio.ledBarGraph(
+    vararg pins: GpioPin,
+    activeHigh: Boolean = true,
+    initialValue: Float = 0f
+) = LEDBarGraph(this, pins.toList(), activeHigh, initialValue)
