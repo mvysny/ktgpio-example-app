@@ -28,7 +28,7 @@ class LED(gpio: Gpio, val pin: GpioPin) : Closeable {
         output.close()
     }
 
-    override fun toString() = "LED(${pin}=${if (isLit) "on" else "off"})"
+    override fun toString() = "LED(gpio${pin}=${if (isLit) "on" else "off"})"
 
     /**
      * Turns the LED on.
