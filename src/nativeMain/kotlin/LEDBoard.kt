@@ -4,9 +4,18 @@ import io.ktgp.util.sleep
 
 /**
  * Represents multiple LEDs which can be controlled at the same time.
+ * @param pins connect to LEDs on all of these pins.
+ * @param activeHigh If `true` (the default), the [on] method will set all the associated pins to HIGH.
+ * If `false`, the [on] method will set all pins to LOW (the [off] method always does the opposite).
+ * @param initialValue If `false` (the default), all LEDs will be off initially.
+ * If `true`, the device will be switched on initially.
  */
-class LEDBoard(gpio: Gpio, pins: List<GpioPin>) : LEDCollection, Closeable {
-    private val _leds = CloseableLEDCollection(gpio, pins)
+class LEDBoard(
+    gpio: Gpio, pins: List<GpioPin>,
+    val activeHigh: Boolean = true,
+    initialValue: Boolean = false
+) : LEDCollection, Closeable {
+    private val _leds = CloseableLEDCollection(gpio, pins, activeHigh, initialValue)
 
     override val leds: List<LED>
         get() = _leds.leds

@@ -4,9 +4,16 @@ import io.ktgp.gpio.Gpio
 /**
  * Controls a line of LEDs representing a bar graph. Positive [value] (0 to 1) light the LEDs from first to last.
  * Alternatively set [litCount] to control how many LEDs are lit.
+ * @param activeHigh See [LED.activeHigh].
+ * @param initialValue the initial [value] of the graph given as a float, in the range of 0..1.
  */
-class LEDBarGraph(gpio: Gpio, pins: List<GpioPin>) : LEDCollection, Closeable {
-    private val ledboard = LEDBoard(gpio, pins)
+class LEDBarGraph(
+    gpio: Gpio,
+    pins: List<GpioPin>,
+    val activeHigh: Boolean = true,
+    initialValue: Float = 0f
+) : LEDCollection, Closeable {
+    private val ledboard = LEDBoard(gpio, pins, activeHigh)
 
     override val leds: List<LED>
         get() = ledboard.leds
@@ -28,6 +35,10 @@ class LEDBarGraph(gpio: Gpio, pins: List<GpioPin>) : LEDCollection, Closeable {
             require(value in 0f..1f) { "The value must be in range 0..1" }
             litCount = (value * ledboard.count).toInt()
         }
+
+    init {
+        value = initialValue
+    }
 
     override fun close() {
         ledboard.close()

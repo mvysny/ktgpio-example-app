@@ -40,8 +40,15 @@ interface LEDCollection {
 /**
  * Utility class which owns a list of LEDs and closes them properly on [close].
  * Internal - not supposed to be used by the user directly.
+ * @param activeHigh If `true` (the default), the [on] method will set all the associated pins to HIGH.
+ * If `false`, the [on] method will set all pins to LOW (the [off] method always does the opposite).
+ * @param initialValue If `false` (the default), all LEDs will be off initially.
+ * If `true`, the device will be switched on initially.
  */
-internal class CloseableLEDCollection(gpio: Gpio, pins: List<GpioPin>) : LEDCollection, Closeable {
+internal class CloseableLEDCollection(
+    gpio: Gpio, pins: List<GpioPin>, val activeHigh: Boolean = true,
+    initialValue: Boolean = false
+) : LEDCollection, Closeable {
     private val _leds = mutableListOf<LED>()
 
     override val leds: List<LED>
@@ -50,7 +57,7 @@ internal class CloseableLEDCollection(gpio: Gpio, pins: List<GpioPin>) : LEDColl
     init {
         var initialized = false
         try {
-            pins.forEach { _leds.add(LED(gpio, it)) }
+            pins.toHashSet().forEach { _leds.add(LED(gpio, it, activeHigh, initialValue)) }
             initialized = true
         } finally {
             if (!initialized) {

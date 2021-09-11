@@ -6,22 +6,37 @@ import io.ktgp.util.sleep
 
 /**
  * A single LED on given [pin]. The LED is off by default.
+ *
+ * Connect the cathode (short leg, flat side) of the LED to a ground pin; connect the anode
+ * (longer leg) to a limiting resistor; connect the other side of the limiting resistor to a
+ * GPIO pin (the limiting resistor can be placed either side of the LED).
+ * @param pin The Pin that the device is connected to. The GPIO pin number, see [GpioPin] for more details.
+ * @param activeHigh If `true` (the default), the LED will operate normally with the circuit described above.
+ * If `false` you should wire the cathode to the GPIO pin, and the anode to a 3V3 pin (via a limiting resistor).
+ * @param initialValue if `false` (the default), the LED will be off initially.
+ * If `true`, the LED will be switched on initially.
  */
-class LED(gpio: Gpio, val pin: GpioPin) : Closeable {
+class LED(
+    gpio: Gpio,
+    val pin: GpioPin,
+    val activeHigh: Boolean = true,
+    initialValue: Boolean = false
+) : Closeable {
+
     init {
         require(pin in 0..27) { "Invalid gpio number $gpio: must be 0..27" }
     }
 
+    private val output: Output = gpio.output(pin, if (initialValue) PinState.HIGH else PinState.LOW, !activeHigh)
+
     /**
      * Whether the LED is on or not.
      */
-    var isLit: Boolean = false
+    var isLit: Boolean = initialValue
         set(value) {
             field = value
             output.setState(if (value) PinState.HIGH else PinState.LOW)
         }
-
-    private val output: Output = gpio.output(pin)
 
     override fun close() {
         isLit = false
