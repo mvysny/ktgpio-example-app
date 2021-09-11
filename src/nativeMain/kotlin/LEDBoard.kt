@@ -29,7 +29,7 @@ class LEDBoard(
      */
     fun on(vararg indices: Int) {
         if (indices.isEmpty()) {
-            leds.forEach { it.on() }
+            on()
         } else {
             indices.forEach { leds[it].on() }
         }
@@ -40,7 +40,7 @@ class LEDBoard(
      */
     fun off(vararg indices: Int) {
         if (indices.isEmpty()) {
-            leds.forEach { it.off() }
+            off()
         } else {
             indices.forEach { leds[it].off() }
         }
@@ -51,7 +51,7 @@ class LEDBoard(
      */
     fun toggle(vararg indices: Int) {
         if (indices.isEmpty()) {
-            leds.forEach { it.toggle() }
+            toggle()
         } else {
             indices.forEach { leds[it].toggle() }
         }
