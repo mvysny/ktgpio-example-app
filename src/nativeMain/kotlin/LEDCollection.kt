@@ -1,5 +1,8 @@
+import io.ktgp.Closeable
+import io.ktgp.gpio.Gpio
+
 /**
- * A collection of LEDs.
+ * A basic collection of LEDs. See [LEDBoard] and [LEDBarGraph] for concrete implementations.
  */
 interface LEDCollection {
     /**
@@ -32,4 +35,35 @@ interface LEDCollection {
      * Valid LED indices range.
      */
     val indices: IntRange get() = leds.indices
+}
+
+/**
+ * Utility class which owns a list of LEDs and closes them properly on [close].
+ * Internal - not supposed to be used by the user directly.
+ */
+internal class CloseableLEDCollection(gpio: Gpio, pins: List<GpioPin>) : LEDCollection, Closeable {
+    private val _leds = mutableListOf<LED>()
+
+    override val leds: List<LED>
+        get() = _leds
+
+    init {
+        var initialized = false
+        try {
+            pins.forEach { _leds.add(LED(gpio, it)) }
+            initialized = true
+        } finally {
+            if (!initialized) {
+                close()
+            }
+        }
+    }
+
+    override fun close() {
+        _leds.forEach { it.closeQuietly() }
+        _leds.clear()
+    }
+
+    override fun toString(): String =
+        leds.joinToString(", ") { "gpio${it.pin}" }
 }

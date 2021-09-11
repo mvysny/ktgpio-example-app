@@ -3,29 +3,16 @@ import io.ktgp.gpio.Gpio
 import io.ktgp.util.sleep
 
 /**
- * Represents multiple LEDs on multiple PINs which can be controlled at the same time.
+ * Represents multiple LEDs which can be controlled at the same time.
  */
 class LEDBoard(gpio: Gpio, pins: List<GpioPin>) : LEDCollection, Closeable {
-    private val _leds = mutableListOf<LED>()
+    private val _leds = CloseableLEDCollection(gpio, pins)
 
     override val leds: List<LED>
-        get() = _leds
-
-    init {
-        var initialized = false
-        try {
-            pins.forEach { _leds.add(LED(gpio, it)) }
-            initialized = true
-        } finally {
-            if (!initialized) {
-                close()
-            }
-        }
-    }
+        get() = _leds.leds
 
     override fun close() {
-        _leds.forEach { it.closeQuietly() }
-        _leds.clear()
+        _leds.close()
     }
 
     /**
@@ -33,9 +20,9 @@ class LEDBoard(gpio: Gpio, pins: List<GpioPin>) : LEDCollection, Closeable {
      */
     fun on(vararg indices: Int) {
         if (indices.isEmpty()) {
-            _leds.forEach { it.on() }
+            leds.forEach { it.on() }
         } else {
-            indices.forEach { _leds[it].on() }
+            indices.forEach { leds[it].on() }
         }
     }
 
@@ -44,9 +31,9 @@ class LEDBoard(gpio: Gpio, pins: List<GpioPin>) : LEDCollection, Closeable {
      */
     fun off(vararg indices: Int) {
         if (indices.isEmpty()) {
-            _leds.forEach { it.off() }
+            leds.forEach { it.off() }
         } else {
-            indices.forEach { _leds[it].off() }
+            indices.forEach { leds[it].off() }
         }
     }
 
@@ -55,9 +42,9 @@ class LEDBoard(gpio: Gpio, pins: List<GpioPin>) : LEDCollection, Closeable {
      */
     fun toggle(vararg indices: Int) {
         if (indices.isEmpty()) {
-            _leds.forEach { it.toggle() }
+            leds.forEach { it.toggle() }
         } else {
-            indices.forEach { _leds[it].toggle() }
+            indices.forEach { leds[it].toggle() }
         }
     }
 
@@ -83,7 +70,7 @@ class LEDBoard(gpio: Gpio, pins: List<GpioPin>) : LEDCollection, Closeable {
      * 0 means off, any non-zero value means on.
      */
     fun setValue(vararg values: Int) {
-        _leds.forEachIndexed { index, led ->
+        leds.forEachIndexed { index, led ->
             val value = if (index in values.indices) values[index] else 0
             led.isLit = value != 0
         }
@@ -93,11 +80,11 @@ class LEDBoard(gpio: Gpio, pins: List<GpioPin>) : LEDCollection, Closeable {
      * Turns on LEDs in given [indices] range, turns off all other LEDs.
      */
     fun setValue(indices: IntRange) {
-        _leds.forEachIndexed { index, led -> led.isLit = index in indices }
+        leds.forEachIndexed { index, led -> led.isLit = index in indices }
     }
 
     override fun toString(): String =
-        "LEDBoard(${_leds.joinToString(", ") { "gpio${it.pin}=${if (it.isLit) "on" else "off"}" }})"
+        "LEDBoard(${leds.joinToString(", ") { "gpio${it.pin}=${if (it.isLit) "on" else "off"}" }})"
 }
 
 /**
