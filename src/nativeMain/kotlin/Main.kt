@@ -44,6 +44,9 @@ private fun example2(gpio: Gpio) {
     println("Type in text to display, then press Enter. Empty line ends the program.")
     gpio.ledCharDisplay(17, 27, 22, 13, 19, 26, 6, activeHigh = false).use { leds ->
         val lines = generateSequence { var line = readLine(); if (line.isNullOrBlank()) line = null; line }
-        lines.forEach { leds.show(it) }
+        lines.forEach {
+            leds.show(it)
+            println(leds)
+        }
     }
 }

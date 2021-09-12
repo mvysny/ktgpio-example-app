@@ -35,7 +35,7 @@ import io.ktgp.util.sleep
  * @param pins Specify the GPIO pins that the multi-segment display is attached to. Pins should be in the
  * LED segment order A, B, C, D, E, F, G, and will be named automatically by the class.
  * If a decimal-point pin is present, specify it separately as the dp parameter.
- * @property dp If a decimal-point segment is present, specify it as this named parameter.
+ * @param dp If a decimal-point segment is present, specify it as this named parameter.
  * @property font A mapping of values (typically characters, but may also be numbers) to tuples of LED states.
  * A default mapping for ASCII characters is provided for 7 and 14 segment displays.
  *
@@ -51,12 +51,17 @@ import io.ktgp.util.sleep
 class LEDCharDisplay(
     gpio: Gpio,
     pins: List<GpioPin>,
-    val dp: GpioPin? = null,
+    dp: GpioPin? = null,
     var font: Map<Char, List<Int>>? = null,
     val activeHigh: Boolean = true,
     initialValue: Char = ' '
 ) : LEDCollection, Closeable {
-    private val _leds = LEDBoard(gpio, pins, activeHigh, false)
+    private val _leds = LEDBoard(gpio, pins + if (dp != null) listOf(dp) else listOf(), activeHigh, false)
+
+    /**
+     * The decimal-point segment (DP) LED.
+     */
+    val dpled: LED? = if (dp == null) null else _leds.leds.last()
 
     override fun close() {
         _leds.close()
@@ -85,15 +90,17 @@ class LEDCharDisplay(
     override fun toString(): String {
         val pins = buildString {
             _leds.leds.forEachIndexed { index, led ->
-                append('a' + index)
-                append("/gpio")
-                append(led.pin)
-                append('=')
-                append(if (led.isLit) "on" else "off")
-                append(",")
+                if (led != dpled) {
+                    append('a' + index)
+                    append("/gpio")
+                    append(led.pin)
+                    append('=')
+                    append(if (led.isLit) "on" else "off")
+                    append(",")
+                }
             }
         }
-        return "LEDCharDisplay(${if (activeHigh) "active_high" else "active_low"}, '$value'; $pins dp/gpio$dp=off)"
+        return "LEDCharDisplay(${if (activeHigh) "active_high" else "active_low"}, '$value'; $pins dp=$dpled)"
     }
 
     init {
@@ -141,7 +148,7 @@ private val font7Segment: Map<Char, List<Int>> = mapOf(
     't' to listOf(0, 0, 0, 1, 1, 1, 1),
     'u' to listOf(0, 0, 1, 1, 1, 0, 0),
     'U' to listOf(0, 1, 1, 1, 1, 1, 0),
-    'v' to listOf(0, 1, 1, 1, 1, 1, 0),
+    'v' to listOf(0, 0, 1, 1, 1, 1, 0),
     'x' to listOf(0, 0, 1, 0, 0, 1, 1),
     'y' to listOf(0, 1, 1, 1, 0, 1, 1),
     'z' to listOf(1, 1, 0, 1, 1, 0, 1),

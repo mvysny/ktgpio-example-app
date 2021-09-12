@@ -86,6 +86,19 @@ class LEDBoard(
     }
 
     /**
+     * Returns the current value of the LED Board.
+     */
+    fun getValue(length: Int? = null): List<Int> {
+        val result = MutableList(length ?: leds.size) { 0 }
+        result.indices.forEach { index ->
+            result[index] = if (index in indices) {
+                if (leds[index].isLit) 1 else 0
+            } else 0
+        }
+        return result
+    }
+
+    /**
      * Turns on LEDs in given [indices] range, turns off all other LEDs.
      */
     fun setValue(indices: IntRange) {
