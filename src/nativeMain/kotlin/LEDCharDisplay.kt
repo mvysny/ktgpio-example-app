@@ -125,9 +125,11 @@ private val font7Segment: Map<Char, List<Int>> = mapOf(
     'e' to listOf(1, 0, 0, 1, 1, 1, 1),
     'f' to listOf(1, 0, 0, 0, 1, 1, 1),
     'g' to listOf(1, 0, 1, 1, 1, 1, 0),
-    'h' to listOf(0, 1, 1, 0, 1, 1, 1),
+    'H' to listOf(0, 1, 1, 0, 1, 1, 1),
+    'h' to listOf(0, 0, 1, 0, 1, 1, 1),
     'i' to listOf(0, 0, 0, 0, 1, 1, 0),
     'j' to listOf(0, 1, 1, 1, 1, 0, 0),
+    'k' to listOf(0, 1, 0, 0, 1, 1, 1),
     'l' to listOf(0, 0, 0, 1, 1, 1, 0),
     'n' to listOf(0, 0, 1, 0, 1, 0, 1),
     'o' to listOf(0, 0, 1, 1, 1, 0, 1),
@@ -138,11 +140,27 @@ private val font7Segment: Map<Char, List<Int>> = mapOf(
     's' to listOf(1, 0, 1, 1, 0, 1, 1),
     't' to listOf(0, 0, 0, 1, 1, 1, 1),
     'u' to listOf(0, 0, 1, 1, 1, 0, 0),
+    'v' to listOf(0, 1, 1, 1, 1, 1, 0),
     'U' to listOf(0, 1, 1, 1, 1, 1, 0),
     'y' to listOf(0, 1, 1, 1, 0, 1, 1),
-    'z' to listOf(1, 1, 0, 1, 1, 0, 1)
+    'z' to listOf(1, 1, 0, 1, 1, 0, 1),
+    '_' to listOf(0, 0, 0, 1, 0, 0, 0),
+    '-' to listOf(0, 0, 0, 0, 0, 0, 1),
+    '=' to listOf(0, 0, 0, 1, 0, 0, 1),
 )
 
+/**
+ * Creates a character display. See [LEDCharDisplay] for more info.
+ * @param pins Specify the GPIO pins that the multi-segment display is attached to. Pins should be in the
+ * LED segment order A, B, C, D, E, F, G, and will be named automatically by the class.
+ * If a decimal-point pin is present, specify it separately as the dp parameter.
+ * @property dp If a decimal-point segment is present, specify it as this named parameter.
+ * @property font A mapping of values (typically characters, but may also be numbers) to tuples of LED states.
+ * See [LEDCharDisplay.font] for more info.
+ * @property activeHigh See [LED.activeHigh].
+ * @param initialValue the initial [LEDCharDisplay.value] of the graph given as a [Char], defaults to space `' '`
+ * which typically maps to all LEDs being inactive.
+ */
 fun Gpio.ledCharDisplay(
     vararg pins: GpioPin,
     dp: GpioPin? = null,
