@@ -76,6 +76,9 @@ The development cycle is as follows:
 You can simply run steps 2. and 3. by running `./gradlew deploy` - it will rebuild the binary and
 deploy to your RPI.
 
+Make sure to visit the excellent [GPIO Zero: Basic Recipes Guide](https://gpiozero.readthedocs.io/en/stable/recipes.html)
+to experiment with your RPI.
+
 ## More documentation
 
 Please read the [Python GPIOZero excellent documentation](https://gpiozero.readthedocs.io/en/stable/recipes.html)
