@@ -1,6 +1,4 @@
 import io.ktgp.gpio.Gpio
-import io.ktgp.gpio.Output
-import io.ktgp.gpio.PinState
 
 /**
  * A single LED on given [pin]. The LED is off by default.
@@ -15,53 +13,19 @@ import io.ktgp.gpio.PinState
  */
 class LED(
     gpio: Gpio,
-    override val pin: GpioPin,
-    val activeHigh: Boolean = true,
+    pin: GpioPin,
+    activeHigh: Boolean = true,
     initialValue: Boolean = false
-) : DigitalOutputDevice {
-
-    init {
-        require(pin in 0..27) { "Invalid gpio number $gpio: must be 0..27" }
-    }
-
-    private val output: Output = gpio.output(pin, if (initialValue) PinState.HIGH else PinState.LOW, !activeHigh)
+) : DigitalOutputDevice(gpio, pin, activeHigh, initialValue, "LED") {
 
     /**
      * Whether the LED is on or not.
      */
-    var isLit: Boolean = initialValue
+    var isLit: Boolean
+    get() = isActive
         set(value) {
-            field = value
-            output.setState(if (value) PinState.HIGH else PinState.LOW)
+            isActive = value
         }
-
-    override var isClosed: Boolean = false
-        private set
-
-    override val isActive: Boolean
-        get() = isLit
-
-    override fun close() {
-        isLit = false
-        isClosed = true
-        output.close()
-    }
-
-    override fun toString() = "LED(${if (activeHigh) "active_high" else "active_low"}; gpio${pin}=${if (isLit) "on" else "off"})"
-
-    /**
-     * Turns the LED on.
-     */
-    override fun on() {
-        isLit = true
-    }
-
-    /**
-     * Turns the LED off.
-     */
-    override fun off() {
-        isLit = false
-    }
 }
 
 /**

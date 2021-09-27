@@ -1,4 +1,7 @@
 import io.ktgp.Closeable
+import io.ktgp.gpio.Gpio
+import io.ktgp.gpio.Output
+import io.ktgp.gpio.PinState
 import io.ktgp.util.sleep
 
 /**
@@ -78,8 +81,25 @@ interface OutputDevice : GPIODevice {
  *
  * This class extends [OutputDevice] with a [blink] method which uses an optional
  * background thread to handle toggling the device state without further interaction.
+ * @param activeHigh If `true` (the default), the LED will operate normally with the circuit described above.
+ * If `false` you should wire the cathode to the GPIO pin, and the anode to a 3V3 pin (via a limiting resistor).
+ * @param initialValue if `false` (the default), the LED will be off initially.
+ * If `true`, the LED will be switched on initially.
  */
-interface DigitalOutputDevice : OutputDevice {
+open class DigitalOutputDevice(
+    gpio: Gpio,
+    override final val pin: GpioPin,
+    val activeHigh: Boolean = true,
+    initialValue: Boolean = false,
+    val name: String
+) : OutputDevice {
+
+    init {
+        require(pin in 0..27) { "Invalid gpio number $gpio: must be 0..27" }
+    }
+
+    protected val output: Output = gpio.output(pin, if (initialValue) PinState.HIGH else PinState.LOW, !activeHigh)
+
     /**
      * Turns the device on and off repeatedly:
      * turns it on for [onTimeMillis] (default 1000), then off for [offTimeMillis] (default 1000).
@@ -96,6 +116,37 @@ interface DigitalOutputDevice : OutputDevice {
             off()
             sleep(offTimeMillis)
         }
+    }
+
+    override final var isClosed: Boolean = false
+        private set
+
+    override final var isActive: Boolean = initialValue
+        set(value) {
+            field = value
+            output.setState(if (value) PinState.HIGH else PinState.LOW)
+        }
+
+    override fun close() {
+        isActive = false
+        isClosed = true
+        output.close()
+    }
+
+    override fun toString() = "${name}(${if (activeHigh) "active_high" else "active_low"}; gpio${pin}=${if (isActive) "on" else "off"})"
+
+    /**
+     * Turns the device on.
+     */
+    override fun on() {
+        isActive = true
+    }
+
+    /**
+     * Turns the device off.
+     */
+    override fun off() {
+        isActive = false
     }
 }
 
