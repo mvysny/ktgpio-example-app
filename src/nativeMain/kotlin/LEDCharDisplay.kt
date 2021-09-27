@@ -58,6 +58,9 @@ class LEDCharDisplay(
 ) : LEDCollection, Closeable {
     private val _leds = LEDBoard(gpio, pins + if (dp != null) listOf(dp) else listOf(), activeHigh, false)
 
+    override val devices: List<LED>
+        get() = _leds.devices
+
     /**
      * The decimal-point segment (DP) LED.
      */
