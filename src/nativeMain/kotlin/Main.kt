@@ -17,6 +17,7 @@ fun main() {
         //
         example1(gpio)
 //        example2(gpio)
+//        example3(gpio)
     }
 }
 
@@ -48,5 +49,20 @@ private fun example2(gpio: Gpio) {
             leds.show(it)
             println(leds)
         }
+    }
+}
+
+private fun example3(gpio: Gpio) {
+    gpio.motor(4, 14).use {
+        println(it)
+        it.forward()
+        println(it)
+        sleep(1000)
+        it.reverse()
+        println(it)
+        sleep(1000)
+        it.stop()
+        println(it)
+        sleep(1000)
     }
 }

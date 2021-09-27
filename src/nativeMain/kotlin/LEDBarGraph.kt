@@ -15,8 +15,8 @@ class LEDBarGraph(
 ) : LEDCollection, Closeable {
     private val ledboard = LEDBoard(gpio, pins, activeHigh)
 
-    override val leds: List<LED>
-        get() = ledboard.leds
+    override val devices: List<LED>
+        get() = ledboard.devices
 
     override var litCount: Int
         get() = ledboard.litCount

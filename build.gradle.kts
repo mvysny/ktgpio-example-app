@@ -39,7 +39,7 @@ val deploy by tasks.creating {
     dependsOn("build")
     doLast {
         exec {
-            commandLine("scp", "build/bin/native/debugExecutable/ktgpio-example-app.kexe", "ubuntu@192.168.0.19:~/Downloads")
+            commandLine("scp", "build/bin/native/debugExecutable/ktgpio-example-app.kexe", "ubuntu@192.168.0.20:~/Downloads")
         }
     }
 }
