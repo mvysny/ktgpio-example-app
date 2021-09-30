@@ -95,7 +95,7 @@ open class DigitalOutputDevice(
 ) : OutputDevice {
 
     init {
-        require(pin in 0..27) { "Invalid gpio number $gpio: must be 0..27" }
+        pin.requireInGpioRange()
     }
 
     protected val output: Output = gpio.output(pin, if (initialValue) PinState.HIGH else PinState.LOW, !activeHigh)

@@ -53,7 +53,7 @@ private fun example2(gpio: Gpio) {
 }
 
 private fun example3(gpio: Gpio) {
-    gpio.motor(ForwardBackwardPin(4, 14)).use {
+    gpio.robot(ForwardBackwardPin(14, 15), ForwardBackwardPin(3, 2)).use {
         println(it)
         it.forward()
         println(it)

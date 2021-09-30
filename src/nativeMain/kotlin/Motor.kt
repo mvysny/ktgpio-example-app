@@ -8,7 +8,13 @@ import io.ktgp.gpio.Gpio
  */
 data class ForwardBackwardPin(
     val forward: GpioPin, val backward: GpioPin
-)
+) {
+    init {
+        forward.requireInGpioRange()
+        backward.requireInGpioRange()
+        require(forward != backward) { "Provide separate pins: $forward $backward" }
+    }
+}
 
 /**
  * Extends CompositeDevice and represents a generic motor connected to a
