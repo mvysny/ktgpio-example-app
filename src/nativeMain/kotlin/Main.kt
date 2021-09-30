@@ -18,6 +18,7 @@ fun main() {
         example1(gpio)
 //        example2(gpio)
 //        example3(gpio)
+//        remoteControlledCar(gpio)
     }
 }
 
@@ -44,8 +45,7 @@ private fun example1(gpio: Gpio) {
 private fun example2(gpio: Gpio) {
     println("Type in text to display, then press Enter. Empty line ends the program.")
     gpio.ledCharDisplay(17, 27, 22, 13, 19, 26, 6, activeHigh = false).use { leds ->
-        val lines = generateSequence { var line = readLine(); if (line.isNullOrBlank()) line = null; line }
-        lines.forEach {
+        stdinLines().forEach {
             leds.show(it)
             println(leds)
         }
@@ -64,5 +64,31 @@ private fun example3(gpio: Gpio) {
         it.stop()
         println(it)
         sleep(1000)
+    }
+}
+
+/**
+ * ssh into your RPI, then run this program, then type in commands :-D
+ */
+private fun remoteControlledCar(gpio: Gpio) {
+    gpio.robot(ForwardBackwardPin(3, 2), ForwardBackwardPin(14, 15)).use { car ->
+        println("Type in program. D - drive, C - cuvaj, R - vpravo, L - vlavo, S - stop. Blank line terminates the program")
+        stdinLines().forEach { line ->
+            try {
+                line.forEach { command ->
+                    when (command.lowercaseChar()) {
+                        'd' -> car.forward()
+                        'c' -> car.backward()
+                        'r' -> car.rightHalf()
+                        'l' -> car.leftHalf()
+                        's' -> car.stop()
+                        else -> println("Unknown command: $command")
+                    }
+                    sleep(300)
+                }
+            } finally {
+                car.stop()
+            }
+        }
     }
 }

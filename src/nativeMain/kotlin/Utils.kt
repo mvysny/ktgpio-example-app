@@ -36,3 +36,10 @@ typealias GpioPin = Int
 internal fun GpioPin.requireInGpioRange() {
     require(this in 0..27) { "Invalid gpio number $this: must be 0..27" }
 }
+
+/**
+ * Reads lines from stdin. The sequence ends once a blank line is received.
+ */
+internal fun stdinLines(): Sequence<String> = generateSequence {
+    var line = readLine(); if (line.isNullOrBlank()) line = null; line
+}
