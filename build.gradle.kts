@@ -1,5 +1,5 @@
 plugins {
-    kotlin("multiplatform") version "1.5.31"
+    kotlin("multiplatform") version "1.6.10"
 }
 
 defaultTasks("clean", "build")
@@ -39,7 +39,7 @@ val deploy by tasks.creating {
     dependsOn("build")
     doLast {
         exec {
-            commandLine("scp", "build/bin/native/debugExecutable/ktgpio-example-app.kexe", "ubuntu@192.168.0.23:~/Downloads")
+            commandLine("scp", "build/bin/native/debugExecutable/ktgpio-example-app.kexe", "ubuntu@rpi.local:~/Downloads")
         }
     }
 }
