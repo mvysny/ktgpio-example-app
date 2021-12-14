@@ -27,11 +27,13 @@ data class ForwardBackwardPin(
  * @param pins pins
  */
 class Motor(gpio: Gpio, pins: ForwardBackwardPin): CompositeDevice<DigitalOutputDevice> {
-    private val forward = DigitalOutputDevice(gpio, pins.forward, name = "Forward")
-    private val backward = DigitalOutputDevice(gpio, pins.backward, name = "Backward")
+    private val forward: DigitalOutputDevice get() = devices[0]
+    private val backward: DigitalOutputDevice get() = devices[1]
 
-    override val devices: List<DigitalOutputDevice>
-        get() = listOf(forward, backward)
+    override val devices: List<DigitalOutputDevice> = buildDevicesSafely {
+        add(DigitalOutputDevice(gpio, pins.forward, name = "Forward"))
+        add(DigitalOutputDevice(gpio, pins.backward, name = "Backward"))
+    }
 
     /**
      * Drive the motor backwards.

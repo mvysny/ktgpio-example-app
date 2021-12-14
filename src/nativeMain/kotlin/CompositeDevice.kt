@@ -52,3 +52,32 @@ interface CompositeOutputDevice<D: OutputDevice> : CompositeDevice<D> {
         devices.forEach { it.toggle() }
     }
 }
+
+/**
+ * Creates a list of devices safely, one for each pin. If any of the device
+ * fails to create, all already created devices are closed gracefully.
+ */
+fun <D: Device> buildDevicesSafely(block: MutableList<D>.() -> Unit) : List<D> {
+    val list = mutableListOf<D>()
+    var success = false
+    try {
+        block(list)
+        success = true
+        return list.toList()
+    } finally {
+        if (!success) {
+            list.forEach { it.closeQuietly() }
+        }
+    }
+}
+
+/**
+ * Creates a list of devices safely, one for each pin. If any of the device
+ * fails to create, all already created devices are closed gracefully.
+ * @param block called for each pin, to create a new device.
+ * @return the devices created by [block], one for each pin.
+ */
+fun <D: Device> Iterable<GpioPin>.createDevicesSafely(block: (GpioPin) -> D) : List<D> =
+    buildDevicesSafely {
+        this@createDevicesSafely.toSet().forEach { add(block(it)) }
+    }

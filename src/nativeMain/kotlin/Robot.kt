@@ -9,15 +9,17 @@ class Robot(gpio: Gpio, left: ForwardBackwardPin, right: ForwardBackwardPin) : C
     /**
      * The motor on the left of the robot.
      */
-    val leftMotor = Motor(gpio, left)
+    val leftMotor: Motor get() = devices[0]
 
     /**
      * The motor on the left of the robot.
      */
-    val rightMotor = Motor(gpio, right)
+    val rightMotor: Motor get() = devices[1]
 
-    override val devices: List<Motor>
-        get() = listOf(leftMotor, rightMotor)
+    override val devices: List<Motor> = buildDevicesSafely {
+        add(Motor(gpio, left))
+        add(Motor(gpio, right))
+    }
 
     /**
      * Drive the robot backward by running both motors backward.

@@ -16,7 +16,7 @@ class LEDBoard(
     initialValue: Boolean = false
 ) : LEDCollection, Closeable {
 
-    override val devices: List<LED> = pins.toSet().map { LED(gpio, it, activeHigh, initialValue) }
+    override val devices: List<LED> = pins.createDevicesSafely { LED(gpio, it, activeHigh, initialValue) }
 
     /**
      * Turns on LEDs with given [indices]. If no indices are given, turns on all LEDs.

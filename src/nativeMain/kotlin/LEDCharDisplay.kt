@@ -56,7 +56,7 @@ class LEDCharDisplay(
     val activeHigh: Boolean = true,
     initialValue: Char = ' '
 ) : LEDCollection, Closeable {
-    private val _leds = LEDBoard(gpio, pins + if (dp != null) listOf(dp) else listOf(), activeHigh, false)
+    private val _leds = LEDBoard(gpio, pins + (if (dp != null) listOf(dp) else listOf()), activeHigh, false)
 
     override val devices: List<LED>
         get() = _leds.devices
