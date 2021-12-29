@@ -1,7 +1,5 @@
 import io.ktgp.Closeable
-import io.ktgp.gpio.Gpio
-import io.ktgp.gpio.Output
-import io.ktgp.gpio.PinState
+import io.ktgp.gpio.*
 import io.ktgp.util.sleep
 
 /**
@@ -148,4 +146,50 @@ open class DigitalOutputDevice(
     override fun off() {
         isActive = false
     }
+}
+
+/**
+ * Represents a generic GPIO input device.
+ *
+ * This class extends GPIODevice to add facilities common to GPIO input devices.
+ * The constructor adds the optional [pullUp] parameter to specify how the pin should be
+ * pulled by the internal resistors. The [isActive] property is adjusted
+ * accordingly so that True still means active regardless of the [pullUp] setting.
+ */
+interface InputDevice : GPIODevice {
+    /**
+     * If [Bias.PULL_UP], the device uses a pull-up resistor to set the GPIO pin “high” by default.
+     * If [Bias.PULL_DOWN], the pin will be pulled low.
+     *
+     * Defaults to [Bias.DISABLE].
+     */
+    val pullUp: Bias
+}
+
+open class DigitalInputDevice(
+    gpio: Gpio,
+    override final val pin: GpioPin,
+    override final val pullUp: Bias = Bias.DISABLE,
+    val activeHigh: Boolean = true,
+    val name: String
+) : InputDevice {
+
+    init {
+        pin.requireInGpioRange()
+    }
+
+    protected val input: Input = gpio.input(pin, !activeHigh, pullUp)
+
+    override final var isClosed: Boolean = false
+        private set
+
+    override final val isActive: Boolean
+        get() = input.getState() == PinState.HIGH
+
+    override fun close() {
+        isClosed = true
+        input.close()
+    }
+
+    override fun toString() = "${name}(${if (activeHigh) "active_high" else "active_low"} $pullUp; gpio${pin}=${if (isActive) "active" else "inactive"})"
 }

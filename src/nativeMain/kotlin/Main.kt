@@ -1,4 +1,5 @@
 import io.ktgp.Gpio
+import io.ktgp.gpio.Bias
 import io.ktgp.gpio.Gpio
 import io.ktgp.use
 import io.ktgp.util.sleep
@@ -16,6 +17,7 @@ fun main() {
         // See https://www.raspberrypi.org/documentation/computers/os.html#gpio-pinout for more details.
         //
         ledExample(gpio)
+//        buttonExample(gpio)
 //        example1(gpio)
 //        example2(gpio)
 //        example3(gpio)
@@ -31,6 +33,20 @@ private fun ledExample(gpio: Gpio) {
         println("Blinking $led")
         led.blink()
     }
+}
+
+/**
+ * [Button example](https://gpiozero.readthedocs.io/en/stable/recipes.html#button)
+ */
+private fun buttonExample(gpio: Gpio) {
+    val pin = 2
+    println("Press the button on GPIO$pin 3 times")
+    var cont = 0
+    gpio.buttonListen(pin) {
+        println("Pressed")
+        cont++ < 3
+    }
+    println("Done")
 }
 
 /**

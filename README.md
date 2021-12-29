@@ -84,8 +84,13 @@ to experiment with your RPI.
 ### LED blinking
 
 See the [LED example](https://gpiozero.readthedocs.io/en/stable/recipes.html#led) on how
-to connect the LED. Then, make sure the `ledExample(gpio)` function is called,
+to connect the LED. Then, make sure the `ledExample(gpio)` function is called in `Main.kt`,
 build and deploy this app via `./gradlew deploy`, then run it on your RPI.
+
+### Waiting for Button
+See the [Button example](https://gpiozero.readthedocs.io/en/stable/recipes.html#button)
+on how to connect the button. Then, make sure the `buttonExample(gpio)` function
+is called in `Main.kt`.
 
 ## More documentation
 
