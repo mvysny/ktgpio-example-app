@@ -17,8 +17,8 @@ fun Gpio.button(pin: GpioPin): Button = Button(this, pin)
  */
 fun Gpio.buttonListen(pin: GpioPin, onPressed: () -> Boolean) {
     pin.requireInGpioRange()
-    listen(pin) { e ->
-        if (e.type == Event.Type.FALLING_EDGE) {
+    listen(pin, activeLow = true) { e ->
+        if (e.type == Event.Type.RISING_EDGE) {
             onPressed()
         } else {
             true

@@ -18,6 +18,7 @@ fun main() {
         //
         ledExample(gpio)
 //        buttonExample(gpio)
+//        buttonExample2(gpio)
 //        example1(gpio)
 //        example2(gpio)
 //        example3(gpio)
@@ -47,6 +48,20 @@ private fun buttonExample(gpio: Gpio) {
         cont++ < 3
     }
     println("Done")
+}
+
+/**
+ * [Button example](https://gpiozero.readthedocs.io/en/stable/recipes.html#button)
+ */
+private fun buttonExample2(gpio: Gpio) {
+    gpio.button(2).use { button ->
+        println("Dumping $button state for 10 seconds")
+        repeat(100) {
+            print(if (button.isActive) 'x' else '.')
+            sleep(100)
+        }
+    }
+    println("\n\nDone")
 }
 
 /**

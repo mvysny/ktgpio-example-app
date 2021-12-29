@@ -92,6 +92,8 @@ See the [Button example](https://gpiozero.readthedocs.io/en/stable/recipes.html#
 on how to connect the button. Then, make sure the `buttonExample(gpio)` function
 is called in `Main.kt`.
 
+The `buttonExample2(gpio)` instead repeatedly measures the button press.
+
 ## More documentation
 
 Please read the [Python GPIOZero excellent documentation](https://gpiozero.readthedocs.io/en/stable/recipes.html)

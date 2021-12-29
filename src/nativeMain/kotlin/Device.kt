@@ -178,7 +178,7 @@ open class DigitalInputDevice(
         pin.requireInGpioRange()
     }
 
-    protected val input: Input = gpio.input(pin, !activeHigh, pullUp)
+    protected val input: Input = gpio.input(pin, activeHigh, pullUp)
 
     override final var isClosed: Boolean = false
         private set
