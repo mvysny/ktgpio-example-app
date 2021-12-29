@@ -60,6 +60,8 @@ You'll probably need to run this app with sudo, in order to be able to access
 https://raspberrypi.stackexchange.com/questions/40105/access-gpio-pins-without-root-no-access-to-dev-mem-try-running-as-root
 for more details. Simply run the binary with `sudo ./ktgpio-example-app.kexe` and you should be fine.
 
+By default the program will perform a LED blinking. See below for other examples.
+
 ## Development
 
 Simply download Intellij IDEA (Community Edition is enough) and open this project in order to develop this example app further.
@@ -78,6 +80,12 @@ deploy to your RPI.
 
 Make sure to visit the excellent [GPIO Zero: Basic Recipes Guide](https://gpiozero.readthedocs.io/en/stable/recipes.html)
 to experiment with your RPI.
+
+### LED blinking
+
+See the [LED example](https://gpiozero.readthedocs.io/en/stable/recipes.html#led) on how
+to connect the LED. Then, make sure the `ledExample(gpio)` function is called,
+build and deploy this app via `./gradlew deploy`, then run it on your RPI.
 
 ## More documentation
 

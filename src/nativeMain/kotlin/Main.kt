@@ -15,10 +15,21 @@ fun main() {
         // pin number 11 (at least on on Raspberry PI 3B).
         // See https://www.raspberrypi.org/documentation/computers/os.html#gpio-pinout for more details.
         //
-        example1(gpio)
+        ledExample(gpio)
+//        example1(gpio)
 //        example2(gpio)
 //        example3(gpio)
 //        remoteControlledCar(gpio)
+    }
+}
+
+/**
+ * [LED example](https://gpiozero.readthedocs.io/en/stable/recipes.html#led)
+ */
+private fun ledExample(gpio: Gpio) {
+    gpio.led(17).use { led ->
+        println("Blinking $led")
+        led.blink()
     }
 }
 
