@@ -9,6 +9,8 @@ See the [Main.kt](src/nativeMain/kotlin/Main.kt) script for more details.
 For a more complex example please take a look at the sources of the [ktgpio-samples](https://github.com/ktgpio/ktgpio-samples/)
 example app.
 
+Licensed under the MIT license.
+
 ## Prerequisites
 
 Kotlin/Native at the moment doesn't support building on arm64: you'll get
